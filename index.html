@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Photography Portfolio — Heraiza Lorraine Sapno</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=Work+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --wall:#1b1917;
+    --wall-soft:#232019;
+    --mat:#f6f3ec;
+    --mat-shadow: 0 30px 60px -25px rgba(0,0,0,0.55), 0 8px 20px -10px rgba(0,0,0,0.4);
+    --ink:#f2efe9;
+    --ink-dim:#b9b3a6;
+    --caption:#8f8778;
+    --safelight:#e3a857;
+    --safelight-dim: #8a6a37;
+    --line:#3a362f;
+    --serif: 'Fraunces', serif;
+    --sans: 'Work Sans', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--wall);
+    color:var(--ink);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--safelight); color:#1b1917; }
+
+  a{ color:inherit; }
+
+  /* ---------- Filmstrip nav ---------- */
+  .filmstrip{
+    position:sticky; top:0; z-index:50;
+    background:#100f0d;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    align-items:stretch;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .filmstrip::-webkit-scrollbar{display:none;}
+  .sprockets{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:0 10px;
+    flex-shrink:0;
+  }
+  .sprockets span{
+    width:7px;height:7px;border-radius:1px;
+    background:var(--line);
+    flex-shrink:0;
+  }
+  .filmstrip nav{
+    display:flex;
+    flex-shrink:0;
+  }
+  .filmstrip a{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    text-decoration:none;
+    color:var(--ink-dim);
+    padding:16px 18px;
+    white-space:nowrap;
+    border-right:1px solid var(--line);
+    transition:color .2s ease, background .2s ease;
+  }
+  .filmstrip a:hover{ color:var(--safelight); background:rgba(227,168,87,0.06); }
+  .filmstrip a .idx{ color:var(--safelight-dim); margin-right:8px; }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    min-height:92vh;
+    display:flex;
+    align-items:flex-end;
+    overflow:hidden;
+    border-bottom:1px solid var(--line);
+  }
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background:url('photos/title-cover.jpg') center 30%/cover no-repeat;
+    filter: saturate(0.85) contrast(1.05);
+    transform: scale(1.02);
+  }
+  .hero::after{
+    content:"";
+    position:absolute; inset:0;
+    background: linear-gradient(180deg, rgba(20,18,15,0.35) 0%, rgba(20,18,15,0.25) 40%, rgba(15,14,12,0.94) 92%);
+  }
+  .hero-inner{
+    position:relative; z-index:2;
+    padding: 60px 6vw 64px;
+    width:100%;
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--safelight);
+    margin:0 0 18px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:26px;height:1px;background:var(--safelight-dim);
+    display:inline-block;
+  }
+  h1.title{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:clamp(2.6rem, 7vw, 6.4rem);
+    line-height:0.98;
+    letter-spacing:-0.01em;
+    margin:0;
+    max-width:14ch;
+  }
+  .hero-meta{
+    margin-top:26px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:28px;
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--ink-dim);
+    letter-spacing:0.03em;
+  }
+  .hero-meta strong{ color:var(--ink); font-weight:500; }
+  .scroll-cue{
+    position:absolute; right:6vw; bottom:34px; z-index:2;
+    font-family:var(--mono); font-size:11px; color:var(--ink-dim);
+    display:flex; align-items:center; gap:10px;
+    letter-spacing:0.1em; text-transform:uppercase;
+  }
+  .scroll-cue .line{ width:1px; height:34px; background:var(--line); position:relative; overflow:hidden; }
+  .scroll-cue .line::after{
+    content:""; position:absolute; left:0; top:-100%; width:100%; height:100%;
+    background:var(--safelight);
+    animation: drip 1.8s ease-in-out infinite;
+  }
+  @keyframes drip{ 0%{top:-100%;} 60%{top:100%;} 100%{top:100%;} }
+
+  /* ---------- Sections ---------- */
+  .section{
+    padding: 90px 6vw 40px;
+    max-width:1240px;
+    margin:0 auto;
+  }
+  .section-head{
+    display:grid;
+    grid-template-columns: auto 1fr;
+    gap:28px;
+    align-items:baseline;
+    margin-bottom:44px;
+    border-top:1px solid var(--line);
+    padding-top:26px;
+  }
+  .section-letter{
+    font-family:var(--serif);
+    font-style:italic;
+    font-weight:400;
+    font-size:3.4rem;
+    color:var(--safelight);
+    line-height:1;
+  }
+  .section-head h2{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:clamp(1.7rem,3.4vw,2.6rem);
+    margin:0 0 10px;
+  }
+  .section-head p{
+    margin:0;
+    color:var(--ink-dim);
+    max-width:64ch;
+    font-size:15px;
+    line-height:1.65;
+  }
+
+  /* ---------- Photo entries ---------- */
+  .plate{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:56px;
+    align-items:center;
+    margin-bottom:96px;
+  }
+  .plate:nth-child(even){ }
+  .plate.reverse .plate-frame{ order:2; }
+  .plate.reverse .plate-copy{ order:1; }
+
+  .plate-frame{
+    background:var(--mat);
+    padding:18px 18px 54px;
+    box-shadow:var(--mat-shadow);
+    position:relative;
+    transform:rotate(-0.6deg);
+  }
+  .plate:nth-child(even) .plate-frame{ transform:rotate(0.6deg); }
+  .plate-frame img{
+    display:block;
+    width:100%;
+    height:auto;
+    max-height:560px;
+    object-fit:cover;
+    background:#111;
+  }
+  .plate-frame .frame-cap{
+    position:absolute;
+    left:18px; right:18px; bottom:16px;
+    display:flex; justify-content:space-between;
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:0.06em;
+    color:#8a8574;
+  }
+
+  .plate-copy .frame-index{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--safelight-dim);
+    letter-spacing:0.1em;
+    margin-bottom:14px;
+    display:block;
+  }
+  .plate-copy h3{
+    font-family:var(--serif);
+    font-size:clamp(1.5rem,2.6vw,2.1rem);
+    font-weight:500;
+    margin:0 0 20px;
+  }
+  .plate-copy p{
+    color:#cfc9ba;
+    font-size:15.5px;
+    line-height:1.8;
+    margin:0;
+    max-width:52ch;
+  }
+
+  @media (max-width: 860px){
+    .plate, .plate.reverse{ grid-template-columns:1fr; gap:28px; }
+    .plate.reverse .plate-frame{ order:0; }
+    .plate.reverse .plate-copy{ order:0; }
+    .plate-frame{ transform:none !important; }
+  }
+
+  /* ---------- Activities ---------- */
+  .activities{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:40px;
+  }
+  @media (max-width:860px){ .activities{ grid-template-columns:1fr; } }
+  .activity-card{
+    position:relative;
+    border:1px solid var(--line);
+    background:var(--wall-soft);
+  }
+  .activity-card img{
+    width:100%; display:block; height:440px; object-fit:cover;
+    filter:saturate(0.92);
+  }
+  .activity-tag{
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--safelight);
+    padding:18px 22px 0;
+    display:block;
+  }
+  .activity-card h3{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:1.6rem;
+    padding:8px 22px 22px;
+    margin:0;
+  }
+
+  /* ---------- Reflection ---------- */
+  .reflection{
+    background:var(--mat);
+    color:#241f18;
+    padding:100px 6vw;
+  }
+  .reflection-inner{
+    max-width:820px;
+    margin:0 auto;
+  }
+  .reflection .section-letter{ color:var(--safelight-dim); }
+  .reflection h2{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:clamp(2rem,4vw,3rem);
+    margin:0 0 8px;
+  }
+  .reflection .kicker{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:#8a6a37;
+    margin-bottom:34px;
+    display:block;
+  }
+  .reflection p{
+    font-size:17px;
+    line-height:1.85;
+    margin:0 0 26px;
+    font-family:var(--serif);
+    font-weight:300;
+  }
+  .reflection p::first-letter{
+    font-size:3.2rem;
+    float:left;
+    line-height:0.8;
+    padding-right:10px;
+    padding-top:6px;
+    font-weight:500;
+    color:var(--safelight-dim);
+  }
+  .reflection p:not(:first-of-type)::first-letter{
+    font-size:1em; float:none; padding:0; font-weight:300; color:inherit;
+  }
+
+  /* ---------- Footer ---------- */
+  footer{
+    padding:50px 6vw 70px;
+    border-top:1px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:16px;
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:var(--ink-dim);
+    letter-spacing:0.05em;
+  }
+</style>
+</head>
+<body>
+
+<div class="filmstrip">
+  <div class="sprockets">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <nav>
+    <a href="#lines"><span class="idx">A</span>Lines</a>
+    <a href="#shapes"><span class="idx">B</span>Shapes &amp; Forms</a>
+    <a href="#composition"><span class="idx">C</span>Composition</a>
+    <a href="#activities"><span class="idx">D</span>Activities</a>
+    <a href="#reflection"><span class="idx">E</span>Reflection</a>
+  </nav>
+  <div class="sprockets">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="eyebrow">Art Appreciation · GED0007</p>
+    <h1 class="title">Digital Photography Portfolio</h1>
+    <div class="hero-meta">
+      <span><strong>Heraiza Lorraine Sapno</strong></span>
+      <span>Submitted July 9, 2026</span>
+      <span>12 photographs · 3 categories · 2 activities</span>
+    </div>
+  </div>
+  <div class="scroll-cue"><span>Scroll</span><span class="line"></span></div>
+</header>
+
+<main>
+
+  <section class="section" id="lines">
+    <div class="section-head">
+      <span class="section-letter">A</span>
+      <div>
+        <h2>Lines</h2>
+        <p>This set of photographs demonstrates how different types of lines can influence composition and create specific visual effects in photography.</p>
+      </div>
+    </div>
+
+    <article class="plate">
+      <div class="plate-frame">
+        <img src="photos/vertical-lines.jpg" alt="A flagpole shot from below, its vertical line rising against an open sky.">
+        <div class="frame-cap"><span>FRAME 01</span><span>KODAK · CAT. A</span></div>
+      </div>
+      <div class="plate-copy">
+        <span class="frame-index">01 — Vertical Lines</span>
+        <h3>Vertical Lines</h3>
+        <p>This photograph uses vertical lines through the flagpole to create a sense of height and strength. I chose this subject because the tall flagpole stands out clearly against the open sky. The image fits the category since the vertical line naturally draws attention upward. One challenge was finding an angle where the pole was centered without distractions in the background. The photo is effective because its simple composition makes the vertical line easy to recognize.</p>
+      </div>
+    </article>
+
+    <article class="plate reverse">
+      <div class="plate-frame">
+        <img src="photos/horizontal-lines.jpg" alt="A calm sea horizon forming a horizontal line beneath the sky.">
+        <div class="frame-cap"><span>FRAME 02</span><span>KODAK · CAT. A</span></div>
+      </div>
+      <div class="plate-copy">
+        <span class="frame-index">02 — Horizontal Lines</span>
+        <h3>Horizontal Lines</h3>
+        <p>This image uses horizontal lines created by the horizon where the sea meets the sky. I selected this view because the calm ocean provides a clean and balanced composition. It demonstrates the category by emphasizing stability and peacefulness through the long, straight horizon. The challenge was waiting for a moment when the water was clear enough despite the passing boats. The photograph is meaningful because it gives a relaxing feeling while keeping the horizon as the main visual element.</p>
+      </div>
+    </article>
+
+    <article class="plate">
+      <div class="plate-frame">
+        <img src="photos/leading-lines.jpg" alt="A stone pathway leading the eye toward cottages in the distance.">
+        <div class="frame-cap"><span>FRAME 03</span><span>KODAK · CAT. A</span></div>
+      </div>
+      <div class="plate-copy">
+        <span class="frame-index">03 — Leading Lines</span>
+        <h3>Leading Lines</h3>
+        <p>This photograph applies leading lines using the stone pathway that guides the viewer's eyes toward the cottages. I chose this location because the path naturally leads to the main subject and adds depth to the scene. The image clearly represents the category since the walkway directs attention from the foreground to the background. One difficulty was avoiding people blocking the path while keeping the framing balanced. The photograph is effective because the leading lines create a clear visual flow and make the scene more engaging.</p>
+      </div>
+    </article>
+  </section>
+
+  <section class="section" id="shapes">
+    <div class="section-head">
+      <span class="section-letter">B</span>
+      <div>
+        <h2>Shapes and Forms</h2>
+        <p>This collection highlights how shapes, forms, and focus techniques add depth, structure, and emphasis to a photograph.</p>
+      </div>
+    </div>
+
+    <article class="plate">
+      <div class="plate-frame">
+        <img src="photos/silhouette.jpg" alt="A cat's silhouette against a brighter background.">
+        <div class="frame-cap"><span>FRAME 04</span><span>KODAK · CAT. B</span></div>
+      </div>
+      <div class="plate-copy">
+        <span class="frame-index">04 — Silhouette</span>
+        <h3>Silhouette</h3>
+        <p>This photograph uses the silhouette technique by placing the cat against a brighter background. I chose the cat because its outline is clear and easy to recognize. The image demonstrates the category since the subject appears mostly dark while its shape remains visible. A challenge was getting the cat to stay still long enough to capture the shot. The photograph is effective because the simple outline makes the subject stand out immediately.</p>
+      </div>
+    </article>
+
+    <article class="plate reverse">
+      <div class="plate-frame">
+        <img src="photos/three-dimensional-form.jpg" alt="A peeled orange photographed at an angle to show texture and volume.">
+        <div class="frame-cap"><span>FRAME 05</span><span>KODAK · CAT. B</span></div>
+      </div>
+      <div class="plate-copy">
+        <span class="frame-index">05 — Three-Dimensional Form</span>
+        <h3>Three-Dimensional Form</h3>
+        <p>This image focuses on three-dimensional form by showing the orange from an angled perspective. I selected this subject because the peeled fruit naturally displays texture, depth, and volume. The photograph fits the category by making the fruit appear realistic instead of flat. One challenge was finding good lighting that highlighted the details without creating harsh shadows. The image is meaningful because the angle and texture make the fruit look more lifelike.</p>
+      </div>
+    </article>
+
+    <article class="plate">
+      <div class="plate-frame">
+        <img src="photos/shallow-depth-of-field.jpg" alt="A lime in sharp focus with blurred green leaves behind it.">
+        <div class="frame-cap"><span>FRAME 06</span><span>KODAK · CAT. B</span></div>
+      </div>
+      <div class="plate-copy">
+        <span class="frame-index">06 — Shallow Depth of Field</span>
+        <h3>Shallow Depth of Field</h3>
+        <p>This photograph uses a shallow depth of field by keeping the lime in sharp focus while blurring the surrounding leaves. I chose this subject because its bright color stands out against the greenery. The image represents the category since the selective focus isolates the main subject from the background. The challenge was keeping the camera steady while focusing on such a small object. The photograph is effective because the blurred background directs all attention to the lime.</p>
+      </div>
+    </article>
+  </section>
+
+  <section class="section" id="composition">
+    <div class="section-head">
+      <span class="section-letter">C</span>
+      <div>
+        <h2>Composition Techniques</h2>
+        <p>This series showcases different composition techniques that improve visual balance and guide the viewer's attention to the main subject.</p>
+      </div>
+    </div>
+
+    <article class="plate">
+      <div class="plate-frame">
+        <img src="photos/frame-within-frame.jpg" alt="A walkway's walls and ceiling framing the view outside.">
+        <div class="frame-cap"><span>FRAME 07</span><span>KODAK · CAT. C</span></div>
+      </div>
+      <div class="plate-copy">
+        <span class="frame-index">07 — Frame Within a Frame</span>
+        <h3>Frame Within a Frame</h3>
+        <p>This photograph uses the frame within a frame technique by using the walls and ceiling of the walkway to surround the view outside. I chose this subject because the structure naturally directs attention to the opening. The image demonstrates the category by enclosing the main scene within another frame. One challenge was positioning the camera so the frame looked even on all sides. The photograph is effective because it draws the viewer's eyes straight to the center.</p>
+      </div>
+    </article>
+
+    <article class="plate reverse">
+      <div class="plate-frame">
+        <img src="photos/rule-of-thirds.jpg" alt="Four drinks arranged off-center following the rule of thirds.">
+        <div class="frame-cap"><span>FRAME 08</span><span>KODAK · CAT. C</span></div>
+      </div>
+      <div class="plate-copy">
+        <span class="frame-index">08 — Rule of Thirds</span>
+        <h3>Rule of Thirds</h3>
+        <p>This image applies the rule of thirds by placing the drinks off-center instead of in the middle of the frame. I selected this subject because the arrangement creates a balanced composition. The photograph fits the category since the cups are positioned near the grid intersections, making the image more interesting. A challenge was finding the right angle while keeping all four drinks visible. The composition works well because the placement feels natural and visually balanced.</p>
+      </div>
+    </article>
+
+    <article class="plate">
+      <div class="plate-frame">
+        <img src="photos/minimalism.jpg" alt="A single white teapot against a plain background.">
+        <div class="frame-cap"><span>FRAME 09</span><span>KODAK · CAT. C</span></div>
+      </div>
+      <div class="plate-copy">
+        <span class="frame-index">09 — Minimalism</span>
+        <h3>Minimalism</h3>
+        <p>This photograph uses minimalism by featuring a single white teapot against a plain background. I chose this subject because its simple shape stands out without unnecessary details. The image demonstrates the category through the use of negative space and limited elements. The challenge was removing distractions and keeping the background clean. The photograph is effective because the simplicity keeps the viewer's focus on the subject.</p>
+      </div>
+    </article>
+
+    <article class="plate reverse">
+      <div class="plate-frame">
+        <img src="photos/perspective.jpg" alt="A building in North Gate photographed from a low angle.">
+        <div class="frame-cap"><span>FRAME 10</span><span>KODAK · CAT. C</span></div>
+      </div>
+      <div class="plate-copy">
+        <span class="frame-index">10 — Perspective</span>
+        <h3>Perspective</h3>
+        <p>This image uses perspective by photographing the building in North Gate from a low angle. I selected this subject because the tall structure looks more impressive when viewed from below. The photograph represents the category by changing the viewer's point of view and emphasizing the building's height. One challenge was finding the right position to include the entire structure in the frame. The image is meaningful because the angle creates a stronger sense of scale and depth.</p>
+      </div>
+    </article>
+  </section>
+
+  <section class="section" id="activities">
+    <div class="section-head">
+      <span class="section-letter">D</span>
+      <div>
+        <h2>Photography Activities</h2>
+        <p>Two standalone activities exploring emotional connection through the camera — a captured moment, and the character of a companion animal.</p>
+      </div>
+    </div>
+
+    <div class="activities">
+      <div class="activity-card">
+        <img src="photos/precious-moment.jpg" alt="A candid photograph capturing a precious personal moment.">
+        <span class="activity-tag">Photography Activity 1</span>
+        <h3>Precious Moment</h3>
+      </div>
+      <div class="activity-card">
+        <img src="photos/pets-personality.jpg" alt="A photograph capturing a pet's personality and character.">
+        <span class="activity-tag">Photography Activity 2</span>
+        <h3>Pet's Personality</h3>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<section class="reflection" id="reflection">
+  <div class="reflection-inner">
+    <span class="section-letter" style="display:block;margin-bottom:6px;">E</span>
+    <span class="kicker">Closing reflection · GED0007</span>
+    <h2>Reflection</h2>
+
+    <p>Throughout this course, Art Appreciation, I gained a deeper appreciation for the history and meaning of art beyond what I had previously known. Learning about movements such as the Renaissance, Fauvism, Cubism, Impressionism, and Surrealism showed me that every style reflects the beliefs, emotions, and experiences of its time. I also became more familiar with the elements and principles of art, which helped me understand why certain artworks leave a lasting impression. The photography activities allowed me to apply these concepts in a practical way instead of only studying them in theory. Looking back, the course taught me that art is not simply something to admire but also a way of preserving stories, ideas, and moments that might otherwise be forgotten.</p>
+
+    <p>One of the greatest challenges I encountered was dealing with art block, especially during activities that required creativity and originality. There were moments when I doubted my ideas and felt that nothing I created was good enough. Instead of giving up, I learned to slow down, observe my surroundings more carefully, and trust the creative process. Revisiting the lessons from class also reminded me that art does not always have to be perfect to be meaningful. Over time, I realized that overcoming creative struggles became just as valuable as completing the final output because it taught me patience, resilience, and confidence in my own perspective.</p>
+
+    <p>Among all the activities, the photography project became the most memorable because it transformed an ordinary moment into something I will always remember. Taking a photograph of my sister's smile made me realize how art can preserve emotions that words sometimes cannot express. What seemed like a simple assignment became a reminder that the people and moments we often overlook can hold the greatest meaning. That experience changed the way I see photography and art as a whole, making me appreciate their ability to capture memories before they quietly become part of the past. As I finish GED0007, I leave not only with new knowledge about art but also with a greater appreciation for the beauty found in everyday life and the memories we create with the people we love.</p>
+  </div>
+</section>
+
+<footer>
+  <span>Digital Photography Portfolio — Heraiza Lorraine Sapno</span>
+  <span>Art Appreciation · GED0007 · July 9, 2026</span>
+</footer>
+
+</body>
+</html>
